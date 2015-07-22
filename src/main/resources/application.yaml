@@ -12,7 +12,7 @@ spring:
       ddl-auto: update
       dialect: org.hibernate.dialect.MySQL5Dialect
     database-platform: org.hibernate.dialect.MySQL5Dialect
-    show-sql: true
+    show-sql: false
   jmx:
     enabled: false
 

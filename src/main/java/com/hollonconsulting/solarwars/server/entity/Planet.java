@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 @Entity
 @Table
-public class Planet implements Serializable {
+public class Planet extends BaseEntity {
 
     @Id
     @GeneratedValue
@@ -52,6 +52,9 @@ public class Planet implements Serializable {
         BARREN,     //minus to population, minus to defense
     }
 
+    public Planet(){
+
+    }
 
     public Planet(int x, int y, double quality, boolean isCore, boolean isOldEarth, PlanetType planetType, Integer population, Integer playerId, Integer factories, BuildingType buildingType) {
         this.x = x;

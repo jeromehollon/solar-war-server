@@ -8,8 +8,8 @@ import javax.ws.rs.GET;
 
 @Component
 @Path("/")
-public class HelloWorldService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(HelloWorldService.class);
+public class HelloWorldResource {
+    private static final Logger LOGGER = LoggerFactory.getLogger(HelloWorldResource.class);
 
     @GET
     @Path("hello")

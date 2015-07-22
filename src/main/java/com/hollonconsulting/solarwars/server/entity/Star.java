@@ -4,11 +4,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Table;
 import javax.persistence.Id;
-import java.io.Serializable;
 
 @Entity
 @Table
-public class Star implements Serializable {
+public class Star extends BaseEntity {
 
     @Id
     @GeneratedValue
@@ -23,6 +22,10 @@ public class Star implements Serializable {
         NORMAL,
         HEAVEY,
         WEAK
+    }
+
+    public Star(){
+
     }
 
     public Star(int x, int y, StarType starType) {
