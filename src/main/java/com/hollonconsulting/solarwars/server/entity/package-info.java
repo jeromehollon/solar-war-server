@@ -1,0 +1,1 @@
+package com.hollonconsulting.solarwars.server.entity;

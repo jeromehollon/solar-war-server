@@ -1,0 +1,32 @@
+spring:
+  profiles:
+    active: LOCAL
+
+---
+
+spring:
+  profiles: LOCAL
+  jpa:
+    hibernate:
+      generate-ddl: true
+      ddl-auto: update
+      dialect: org.hibernate.dialect.MySQL5Dialect
+    database-platform: org.hibernate.dialect.MySQL5Dialect
+    show-sql: true
+  jmx:
+    enabled: false
+
+datasource:
+  solarWarServerDb:
+    name: solarWarServerDb
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/solar_war_server
+    username: root
+    password: lanfear
+
+logging:
+  file: logs/solar-war-server.log
+  level:
+    com.hollonconsulting.solarwars.server: 'DEBUG'
+    org.springframework: 'WARN'
+    org.hiberante: DEBUG
