@@ -21,6 +21,8 @@ public class Planet extends BaseEntity {
     private boolean isCore;
     private boolean isOldEarth;
     private PlanetType planetType;
+    private int starId;
+    private String name;
 
     //values during game
     private Integer population;
@@ -49,16 +51,17 @@ public class Planet extends BaseEntity {
         MOLTEN,     //minus population, plus to defense, minor boost to factory count
         GIANT,      //plus to factory, plus to population, plus to max ships
         SMALL,      //minus to all
-        BARREN,     //minus to population, minus to defense
+        BARREN,     //minus to population, minus to defense, minor minus to factory count
     }
 
     public Planet(){
 
     }
 
-    public Planet(int x, int y, double quality, boolean isCore, boolean isOldEarth, PlanetType planetType, Integer population, Integer playerId, Integer factories, BuildingType buildingType) {
+    public Planet(int x, int y, String name, double quality, boolean isCore, boolean isOldEarth, PlanetType planetType, Integer population, Integer playerId, Integer factories, BuildingType buildingType, int starId) {
         this.x = x;
         this.y = y;
+        this.name = name;
         this.quality = quality;
         this.isCore = isCore;
         this.isOldEarth = isOldEarth;
@@ -67,6 +70,7 @@ public class Planet extends BaseEntity {
         this.playerId = playerId;
         this.factories = factories;
         this.buildingType = buildingType;
+        this.starId = starId;
     }
 
     public Integer getId() {
@@ -91,6 +95,14 @@ public class Planet extends BaseEntity {
 
     public void setY(int y) {
         this.y = y;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public double getQuality() {
@@ -155,6 +167,14 @@ public class Planet extends BaseEntity {
 
     public void setBuildingType(BuildingType buildingType) {
         this.buildingType = buildingType;
+    }
+
+    public int getStarId() {
+        return starId;
+    }
+
+    public void setStarId(int starId) {
+        this.starId = starId;
     }
 
     @Override

@@ -2,13 +2,19 @@ package com.hollonconsulting.solarwars.server.generator;
 
 import com.hollonconsulting.solarwars.server.appconfig.Defaults;
 import com.hollonconsulting.solarwars.server.entity.Star;
+import com.hollonconsulting.solarwars.server.generator.util.MarkovNameGenerator;
+import com.hollonconsulting.solarwars.server.generator.util.NameGenerator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import sun.rmi.runtime.Log;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
 
 public class StarGenerator {
+    private static final Logger LOGGER = LoggerFactory.getLogger(StarGenerator.class);
 
     private Star[] stars;
     private Random rand;
@@ -38,7 +44,11 @@ public class StarGenerator {
     }
 
     private void initializeStar(int index){
-        this.stars[index] = new Star(0,0, Star.StarType.NORMAL);
+        Star star = new Star(0,0, Star.StarType.NORMAL, MarkovNameGenerator.getInstance().getName());
+        while(isNameInUse(star.getName(), index)){
+            star.setName(MarkovNameGenerator.getInstance().getName());
+        }
+        this.stars[index] = star;
     }
 
     private void placeStar(int index) {
@@ -93,5 +103,15 @@ public class StarGenerator {
             break;
         }
 
+    }
+
+    private boolean isNameInUse(String name, int index) {
+        for(int i = 0; i < index-1; i++){
+            if(stars[i].getName().equals(name))  {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

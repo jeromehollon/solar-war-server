@@ -1,13 +1,18 @@
 package com.hollonconsulting.solarwars.server.generator;
 
 import com.hollonconsulting.solarwars.server.appconfig.Defaults;
+import com.hollonconsulting.solarwars.server.entity.Planet;
 import com.hollonconsulting.solarwars.server.entity.Star;
+import com.hollonconsulting.solarwars.server.generator.util.MarkovNameGenerator;
 import com.hollonconsulting.solarwars.server.service.PlanetService;
 import com.hollonconsulting.solarwars.server.service.StarService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.io.IOException;
+import java.util.Date;
 
 @Component
 public class ServerGenerator implements Runnable {
@@ -30,14 +35,17 @@ public class ServerGenerator implements Runnable {
         LOGGER.info("Launching generation.");
 
         LOGGER.info("Cleaning up...");
-        cleanUpOld();
+        cleanUpOld(true);
         LOGGER.info("Generating...");
         setupNew();
     }
 
-    private void cleanUpOld() {
-        //starService.deleteAll();
-        //planetService.deleteAll();
+    private void cleanUpOld(boolean fullCleanup) {
+        if(fullCleanup){
+            starService.deleteAll();
+            planetService.deleteAll();
+        }
+        //clear out server logs and sessions
     }
 
 
@@ -54,8 +62,19 @@ public class ServerGenerator implements Runnable {
             LOGGER.info("Generating...Stars...skipping.");
         }
 
+        if(planetService.countAll() == 0){
+            LOGGER.info("Generating...Worlds");
+            PlanetGenerator planetGenerator = new PlanetGenerator(starService.findAll());
+            Planet[] planets = planetGenerator.generate();
+            for(Planet planet : planets){
+                planetService.create(planet);
+            }
+        }else{
+            LOGGER.info("Generating...Worlds...skipping");
+        }
 
-        LOGGER.info("Generating...Worlds");
         LOGGER.info("Generating...Fleets");
+        LOGGER.info("Done.");
+        LOGGER.info("Server Available.");
     }
 }

@@ -17,21 +17,23 @@ public class Star extends BaseEntity {
     private int x;
     private int y;
     private StarType starType;
+    private String name;
 
     public enum StarType {
         NORMAL,
         HEAVEY,
-        WEAK
+        WEAK;
     }
 
     public Star(){
 
     }
 
-    public Star(int x, int y, StarType starType) {
+    public Star(int x, int y, StarType starType, String name) {
         this.x = x;
         this.y = y;
         this.starType = starType;
+        this.name = name;
     }
 
     public Integer getId() {
@@ -64,6 +66,14 @@ public class Star extends BaseEntity {
 
     public void setStarType(StarType starType) {
         this.starType = starType;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override

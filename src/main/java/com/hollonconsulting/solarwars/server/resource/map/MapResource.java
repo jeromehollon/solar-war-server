@@ -37,6 +37,9 @@ public class MapResource {
     @Produces("application/json")
     public Response getMap(){
         MapResponse response = new MapResponse(planetService.findAll(), starService.findAll());
-        return Response.ok(response).build();
+        return Response.ok(response)
+                .header("Access-Control-Allow-Origin", "*")
+                .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
+                .build();
     }
 }
