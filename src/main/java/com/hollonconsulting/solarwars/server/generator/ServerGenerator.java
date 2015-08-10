@@ -35,7 +35,7 @@ public class ServerGenerator implements Runnable {
         LOGGER.info("Launching generation.");
 
         LOGGER.info("Cleaning up...");
-        cleanUpOld(true);
+        cleanUpOld(false);
         LOGGER.info("Generating...");
         setupNew();
     }

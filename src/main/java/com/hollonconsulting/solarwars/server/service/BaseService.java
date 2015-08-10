@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface BaseService<E extends BaseEntity> {
     public E create(E star);
+    public E save(E star);
     public E delete(int id) throws NotFoundException;
     public void deleteAll();
     public List<E> findAll();

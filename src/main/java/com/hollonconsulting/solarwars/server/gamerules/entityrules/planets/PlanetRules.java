@@ -47,7 +47,7 @@ public class PlanetRules {
         double quality = Defaults.MAX_QUALITY - Math.sqrt(distance) * 2;
 
         if(quality < Defaults.MIN_QUALITY){
-            LOGGER.warn("Planet %s:%s (%s,%s) has a quality (%4f) too low for the minimum. It is at a distance of %4f. Setting to minimum quality of %2f",
+            LOGGER.warn("Planet {}:{} ({},{}) has a quality ({}) too low for the minimum. It is at a distance of {}. Setting to minimum quality of {}",
                     planet.getId(), planet.getName(), planet.getX(), planet.getY(), quality, distance, Defaults.MIN_QUALITY);
             quality = Defaults.MIN_QUALITY;
         }

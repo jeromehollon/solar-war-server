@@ -29,4 +29,13 @@ logging:
   level:
     com.hollonconsulting.solarwars.server: 'DEBUG'
     org.springframework: 'WARN'
+    org.springframework.security: 'OFF'
     org.hiberante: DEBUG
+
+#server:
+#  port: 9000
+#  ssl:
+#    key-store: keystore.p12
+#    key-store-password: lanfear
+#    keyStoreType: PKCS12
+#    keyAlias: tomcat

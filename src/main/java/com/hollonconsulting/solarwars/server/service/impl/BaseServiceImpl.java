@@ -18,13 +18,16 @@ public abstract class BaseServiceImpl< R extends JpaRepository, E extends BaseEn
     @SuppressWarnings("unchecked")
     public BaseServiceImpl(){
         Class<R> repoType = (Class<R>) GenericTypeResolver.resolveTypeArguments(getClass(), BaseServiceImpl.class)[0];
-
-        LOGGER.debug("Trying to create Service for " + repoType.getCanonicalName());
         repository = ApplicationContextHolder.getContext().getBean(repoType);
     }
 
     @Transactional
     public E create(E entity){
+        return (E) repository.save(entity);
+    }
+
+    @Transactional
+    public E save(E entity){
         return (E) repository.save(entity);
     }
 

@@ -1,10 +1,9 @@
-package com.hollonconsulting.solarwars.server.resource.map;
+package com.hollonconsulting.solarwars.server.resource.api.map;
 
 import com.hollonconsulting.solarwars.server.appconfig.ApplicationContextHolder;
 import com.hollonconsulting.solarwars.server.model.response.map.MapResponse;
 import com.hollonconsulting.solarwars.server.service.PlanetService;
 import com.hollonconsulting.solarwars.server.service.StarService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.ws.rs.GET;
@@ -13,7 +12,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
 @Component
-@Path("map/")
+@Path("api/map/")
 public class MapResource {
     private PlanetService planetService;
     private StarService starService;
@@ -37,9 +36,6 @@ public class MapResource {
     @Produces("application/json")
     public Response getMap(){
         MapResponse response = new MapResponse(planetService.findAll(), starService.findAll());
-        return Response.ok(response)
-                .header("Access-Control-Allow-Origin", "*")
-                .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
-                .build();
+        return Response.ok(response).build();
     }
 }

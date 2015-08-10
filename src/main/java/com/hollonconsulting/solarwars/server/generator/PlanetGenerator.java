@@ -25,10 +25,14 @@ public class PlanetGenerator {
     public Planet[] generate() {
         planets = new ArrayList<>(stars.length * 3);
         for(Star star : stars){
-            int planetsInSystem = random.nextInt(3) + 1;
+            int planetsInSystem = random.nextInt(4) + 2;
             Planet[] siblings = new Planet[planetsInSystem];
             for(int i = 0; i < planetsInSystem; i++){
-                planets.add(this.generatePlanet(star));
+                try {
+                    planets.add(this.generatePlanet(star));
+                }catch(RuntimeException e){
+                    continue;
+                }
             }
         }
 
@@ -42,6 +46,7 @@ public class PlanetGenerator {
         final int DISTANCE_MIN = Defaults.MIN_PLANET_DISTANCE_FROM_STAR;
         final int DISTANCE_MAX = Defaults.MAX_PLANET_DISTANCE_FROM_STAR - DISTANCE_MIN;
 
+        int placementTries = 0;
         do{
             int deltaX = random.nextInt(DISTANCE_MAX) + DISTANCE_MIN;
             int deltaY = random.nextInt(DISTANCE_MAX) + DISTANCE_MIN;
@@ -55,6 +60,11 @@ public class PlanetGenerator {
 
             x = star.getX() + deltaX;
             y = star.getY() + deltaY;
+            placementTries++;
+
+            if(placementTries > 1000){
+                throw new RuntimeException("Unable to place planet");
+            }
 
         }while(isTooClose(x,y));
 
