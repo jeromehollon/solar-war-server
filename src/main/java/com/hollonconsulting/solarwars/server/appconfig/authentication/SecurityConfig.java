@@ -60,7 +60,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .successHandler(authenticationSuccessHandler)
                 .failureHandler(authFailureHandler)
             .and()
-            .logout();
+            .rememberMe()
+                .useSecureCookie(false) //TODO: Change this when we get SSL
+            .and()
+            .logout()
+                .deleteCookies("JSESSIONID")
+                .invalidateHttpSession(true);
     }
 
     @Bean

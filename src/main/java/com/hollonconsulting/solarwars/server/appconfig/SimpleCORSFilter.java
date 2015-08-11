@@ -1,8 +1,10 @@
 package com.hollonconsulting.solarwars.server.appconfig;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -30,12 +32,6 @@ public class SimpleCORSFilter implements Filter {
         response.setHeader("Access-Control-Allow-Headers", "origin, content-type, accept");
         response.setHeader("Access-Control-Allow-Credentials", "true");
 
-        //disable caching
-        response.addHeader("Pragma", "no-cache");
-        response.addHeader("Cache-Control", "no-cache");
-        response.addHeader("Cache-Control", "no-store");
-        response.addHeader("Cache-Control", "must-revalidate");
-        response.addHeader("Expires", "Mon, 8 Aug 2006 10:00:00 GMT");
         chain.doFilter(req, res);
     }
 

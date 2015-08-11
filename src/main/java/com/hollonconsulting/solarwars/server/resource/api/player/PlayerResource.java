@@ -64,4 +64,11 @@ public class PlayerResource {
             throw new BadRequestException("Email is already in use.");
         }
     }
+
+    @GET
+    @Path("revalidate")
+    @Produces("application/json")
+    public Response revalidate(){
+        return Response.noContent().build();
+    }
 }

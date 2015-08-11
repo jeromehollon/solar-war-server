@@ -4,6 +4,8 @@ import com.hollonconsulting.solarwars.server.appconfig.ApplicationContextHolder;
 import com.hollonconsulting.solarwars.server.model.response.map.MapResponse;
 import com.hollonconsulting.solarwars.server.service.PlanetService;
 import com.hollonconsulting.solarwars.server.service.StarService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.ws.rs.GET;
@@ -14,6 +16,8 @@ import javax.ws.rs.core.Response;
 @Component
 @Path("api/map/")
 public class MapResource {
+    private static Logger LOGGER = LoggerFactory.getLogger(MapResource.class);
+
     private PlanetService planetService;
     private StarService starService;
 
@@ -35,6 +39,7 @@ public class MapResource {
     @Path("all")
     @Produces("application/json")
     public Response getMap(){
+        LOGGER.debug("Request for map.");
         MapResponse response = new MapResponse(planetService.findAll(), starService.findAll());
         return Response.ok(response).build();
     }

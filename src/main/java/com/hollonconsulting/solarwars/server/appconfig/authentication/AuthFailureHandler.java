@@ -23,6 +23,6 @@ public class AuthFailureHandler extends SimpleUrlAuthenticationFailureHandler {
         out.flush();
         out.close();
 
-        super.onAuthenticationFailure(request, response, exception);
+        //super.onAuthenticationFailure(request, response, exception);
     }
 }
