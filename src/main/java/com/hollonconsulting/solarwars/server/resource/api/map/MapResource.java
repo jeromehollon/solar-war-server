@@ -39,7 +39,6 @@ public class MapResource {
     @Path("all")
     @Produces("application/json")
     public Response getMap(){
-        LOGGER.debug("Request for map.");
         MapResponse response = new MapResponse(planetService.findAll(), starService.findAll());
         return Response.ok(response).build();
     }

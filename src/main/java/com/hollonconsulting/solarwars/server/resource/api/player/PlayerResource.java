@@ -4,11 +4,14 @@ package com.hollonconsulting.solarwars.server.resource.api.player;
 import com.hollonconsulting.solarwars.server.entity.Player;
 import com.hollonconsulting.solarwars.server.entity.Roles;
 import com.hollonconsulting.solarwars.server.model.request.RegistrationParams;
+import com.hollonconsulting.solarwars.server.model.response.player.PlayerResponse;
 import com.hollonconsulting.solarwars.server.service.PlayerService;
 import com.hollonconsulting.solarwars.server.service.RolesService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -70,5 +73,22 @@ public class PlayerResource {
     @Produces("application/json")
     public Response revalidate(){
         return Response.noContent().build();
+    }
+
+    @GET
+    @Produces("application/json")
+    public Response getPlayer() {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = user.getUsername();
+
+        Player currentPlayer = playerService.findByUsername(username);
+        PlayerResponse response = new PlayerResponse(
+                currentPlayer.getId(),
+                currentPlayer.getUsername(),
+                currentPlayer.getMoney(),
+                currentPlayer.getScore()
+        );
+
+        return Response.ok(response).build();
     }
 }
