@@ -15,7 +15,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EnableJpaRepositories("com.hollonconsulting.solarwars.server.repository")
 @ComponentScan({"com.hollonconsulting.solarwars.server"})
 @EntityScan("com.hollonconsulting.solarwars.server.entity")
-@SpringBootApplication
 public class ServerApplication extends SpringBootServletInitializer  {
     public static void main(String[] args){
         SpringApplication.run(ServerApplication.class);
@@ -24,6 +23,8 @@ public class ServerApplication extends SpringBootServletInitializer  {
 
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(ServerApplication.class);
+        return application
+                .showBanner(true)
+                .sources(ServerApplication.class);
     }
 }
