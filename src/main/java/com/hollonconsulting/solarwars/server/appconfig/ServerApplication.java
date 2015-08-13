@@ -16,7 +16,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @ComponentScan({"com.hollonconsulting.solarwars.server"})
 @EntityScan("com.hollonconsulting.solarwars.server.entity")
 @SpringBootApplication
-public class ServerApplication extends SpringBootServletInitializer {
+public class ServerApplication extends SpringBootServletInitializer  {
     public static void main(String[] args){
         SpringApplication.run(ServerApplication.class);
     }
