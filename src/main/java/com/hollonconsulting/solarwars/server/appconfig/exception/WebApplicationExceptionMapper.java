@@ -21,7 +21,7 @@ import javax.ws.rs.ext.Provider;
 public class WebApplicationExceptionMapper extends AbstractExceptionMapper implements
         ExceptionMapper<WebApplicationException> {
 
-    private static Logger logger = LoggerFactory.getLogger(WebApplicationExceptionMapper.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(WebApplicationExceptionMapper.class);
     private Integer code;
     private Status status;
     private String message;
@@ -46,7 +46,11 @@ public class WebApplicationExceptionMapper extends AbstractExceptionMapper imple
 
         ErrorResponse response = new ErrorResponse(code, status, message);
 
-        logger.error(response.toString());
+        LOGGER.error("Error: ", exception);
+        if(exception.getCause() != null){
+            LOGGER.error("Error Cause: ", exception.getCause());
+        }
+        LOGGER.error(response.toString());
 
         return errorResponse(code, response, exception);
     }

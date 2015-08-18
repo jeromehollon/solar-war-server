@@ -30,11 +30,6 @@ public class Planet extends BaseEntity {
     private Integer factories;
     private BuildingType buildingType;
 
-
-    public static int MaxFactories(Planet p){
-        return 0;
-    }
-
     public enum BuildingType {
         NONE,
         INDUSTRIAL_COMPLEX, //increases max factories

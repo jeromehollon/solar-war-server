@@ -64,4 +64,13 @@ public class ErrorResponse {
     public int hashCode() {
         return Objects.hash(code, status, message);
     }
+
+    @Override
+    public String toString() {
+        return "ErrorResponse{" +
+                "code=" + code +
+                ", status=" + status +
+                ", message='" + message + '\'' +
+                '}';
+    }
 }

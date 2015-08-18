@@ -68,6 +68,6 @@ public abstract class BaseServiceImpl< R extends JpaRepository, E extends BaseEn
 
     @Transactional
     public E findById(int id) {
-        return null;
+        return (E) repository.findOne(id);
     }
 }
