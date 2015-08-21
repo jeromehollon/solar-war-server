@@ -40,8 +40,6 @@ public class PlanetResource {
     @Produces("application/json")
     @Path("{planetId}")
     public Response getPlanet(@NotNull @PathParam("planetId") Integer planetId){
-        LOGGER.debug("Request to get Planet: {}. Service: {}", planetId, planetService);
-
         PlanetResponse planetResponse;
 
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -59,9 +57,7 @@ public class PlanetResource {
 
         boolean doScrub = (currentPlanet.getPlayerId() == 0 || owner.getId() != currentPlayer.getId());
 
-        LOGGER.debug("Building Response.");
         planetResponse = new PlanetResponse(currentPlanet, owner, star, doScrub);
-        LOGGER.debug("Sending Response. {}", planetResponse);
 
         return Response.ok(planetResponse).build();
     }
