@@ -2,6 +2,7 @@ package com.hollonconsulting.solarwars.server.generator;
 
 import com.hollonconsulting.solarwars.server.appconfig.Defaults;
 import com.hollonconsulting.solarwars.server.entity.Star;
+import com.hollonconsulting.solarwars.server.generator.util.CosSinTable;
 import com.hollonconsulting.solarwars.server.generator.util.MarkovNameGenerator;
 import com.hollonconsulting.solarwars.server.generator.util.NameGenerator;
 import org.slf4j.Logger;
@@ -53,7 +54,6 @@ public class StarGenerator {
 
     private void placeStar(int index) {
         final int MIN_TEST = Defaults.MIN_STAR_DISTANCE * Defaults.MIN_STAR_DISTANCE;
-        final int MAX_TEST = Defaults.MAX_STAR_DISTANCE * Defaults.MAX_STAR_DISTANCE;
 
         if(index == 0){
             //Sol is always at 0,0
@@ -64,42 +64,34 @@ public class StarGenerator {
 
 
         while(true){
-            int prox = (index < 1000) ? rand.nextInt(1000) : index - rand.nextInt(index);
+            int distance = rand.nextInt(Defaults.MAX_GALACTIC_DISTANCE);
+            int angle = rand.nextInt(360);
 
-            if(prox > 0){
-                boolean quadrant = true;
-                if (galacticCenterX>0 && stars[prox].getX()<=0) quadrant = false;
-                if (galacticCenterX<0 && stars[prox].getX()>=0) quadrant = false;
-                if (galacticCenterY>0 && stars[prox].getY()<=0) quadrant = false;
-                if (galacticCenterY<0 && stars[prox].getY()>=0) quadrant = false;
-                if (quadrant) continue;
-            }
+            int x = (int) (distance * CosSinTable.getInstance().getCos(angle));
+            int y = (int) (distance * CosSinTable.getInstance().getSine(angle));
 
-            int sx = rand.nextInt(Defaults.MAX_STAR_DISTANCE) - Defaults.MAX_STAR_DISTANCE/2 - stars[prox].getX();
-            int sy = rand.nextInt(Defaults.MAX_STAR_DISTANCE) - Defaults.MAX_STAR_DISTANCE/2 - stars[prox].getY();
-
-            int min = MAX_TEST;
+            int min = Integer.MAX_VALUE;
 
             for(int i = index - 1; i >= 0; i--){
-                int dx = stars[i].getX() - sx;
-                int dy = stars[i].getY() - sy;
+                int dx = stars[i].getX() - x;
+                int dy = stars[i].getY() - y;
 
                 //calculate distance of stars that have been generated from this one
-                int distance = dx * dx + dy * dy;
-                if(distance < min){
-                    min = distance;
+                int local_distance = dx * dx + dy * dy;
+                if(local_distance < min){
+                    min = local_distance;
                     if(min < MIN_TEST) break;
                 }
 
             }
 
-            if(min < MIN_TEST || min >= MAX_TEST) continue;
+            if(min < MIN_TEST) {
+                continue;
+            }
 
-            stars[index].setX(sx);
-            stars[index].setY(sy);
+            stars[index].setX(x);
+            stars[index].setY(y);
 
-            galacticCenterX += sx;
-            galacticCenterY += sy;
             break;
         }
 

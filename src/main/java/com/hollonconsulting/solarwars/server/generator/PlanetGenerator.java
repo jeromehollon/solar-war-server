@@ -5,6 +5,7 @@ import com.hollonconsulting.solarwars.server.appconfig.Defaults;
 import com.hollonconsulting.solarwars.server.entity.Planet;
 import com.hollonconsulting.solarwars.server.entity.Star;
 import com.hollonconsulting.solarwars.server.gamerules.entityrules.planets.PlanetRules;
+import com.hollonconsulting.solarwars.server.generator.util.CosSinTable;
 import com.hollonconsulting.solarwars.server.generator.util.MarkovNameGenerator;
 import com.hollonconsulting.solarwars.server.generator.util.NameGenerator;
 
@@ -25,7 +26,7 @@ public class PlanetGenerator {
     public Planet[] generate() {
         planets = new ArrayList<>(stars.length * 3);
         for(Star star : stars){
-            int planetsInSystem = random.nextInt(4) + 2;
+            int planetsInSystem = random.nextInt(5) + 2;
             Planet[] siblings = new Planet[planetsInSystem];
             for(int i = 0; i < planetsInSystem; i++){
                 try {
@@ -48,18 +49,15 @@ public class PlanetGenerator {
 
         int placementTries = 0;
         do{
-            int deltaX = random.nextInt(DISTANCE_MAX) + DISTANCE_MIN;
-            int deltaY = random.nextInt(DISTANCE_MAX) + DISTANCE_MIN;
+            int distance = random.nextInt(DISTANCE_MAX) + DISTANCE_MIN;
+            int angle = random.nextInt(360);
 
-            if(random.nextBoolean()){
-                deltaX *= -1;
-            }
-            if(random.nextBoolean()){
-                deltaY *= -1;
-            }
+            x = (int) (distance * CosSinTable.getInstance().getCos(angle));
+            y = (int) (distance * CosSinTable.getInstance().getSine(angle));
 
-            x = star.getX() + deltaX;
-            y = star.getY() + deltaY;
+            x += star.getX();
+            y += star.getY();
+
             placementTries++;
 
             if(placementTries > 1000){
