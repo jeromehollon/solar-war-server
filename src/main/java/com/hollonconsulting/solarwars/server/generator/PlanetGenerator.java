@@ -1,19 +1,20 @@
 package com.hollonconsulting.solarwars.server.generator;
 
-import com.fasterxml.jackson.jaxrs.json.annotation.JSONP;
 import com.hollonconsulting.solarwars.server.appconfig.Defaults;
 import com.hollonconsulting.solarwars.server.entity.Planet;
 import com.hollonconsulting.solarwars.server.entity.Star;
 import com.hollonconsulting.solarwars.server.gamerules.entityrules.planets.PlanetRules;
 import com.hollonconsulting.solarwars.server.generator.util.CosSinTable;
 import com.hollonconsulting.solarwars.server.generator.util.MarkovNameGenerator;
-import com.hollonconsulting.solarwars.server.generator.util.NameGenerator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class PlanetGenerator {
+    private static Logger LOGGER = LoggerFactory.getLogger(PlanetGenerator.class);
     Star[] stars;
     Random random;
     ArrayList<Planet> planets;
@@ -30,7 +31,9 @@ public class PlanetGenerator {
             Planet[] siblings = new Planet[planetsInSystem];
             for(int i = 0; i < planetsInSystem; i++){
                 try {
-                    planets.add(this.generatePlanet(star));
+                    Planet newPlanet = this.generatePlanet(star, siblings);
+                    planets.add(newPlanet);
+                    siblings[i] = newPlanet;
                 }catch(RuntimeException e){
                     continue;
                 }
@@ -40,17 +43,17 @@ public class PlanetGenerator {
         return planets.toArray(new Planet[0]);
     }
 
-    private Planet generatePlanet(Star star) {
+    private Planet generatePlanet(Star star, Planet[] siblings) {
         int x;
         int y;
-
-        final int DISTANCE_MIN = Defaults.MIN_PLANET_DISTANCE_FROM_STAR;
-        final int DISTANCE_MAX = Defaults.MAX_PLANET_DISTANCE_FROM_STAR - DISTANCE_MIN;
+        int orbit;
 
         int placementTries = 0;
         do{
-            int distance = random.nextInt(DISTANCE_MAX) + DISTANCE_MIN;
-            int angle = random.nextInt(360);
+            orbit = getOrbit(siblings, star);
+            int distance = Defaults.PLANET_ORBITS[orbit];
+            int angle = random.nextInt(5) * (360/5);
+
 
             x = (int) (distance * CosSinTable.getInstance().getCos(angle));
             y = (int) (distance * CosSinTable.getInstance().getSine(angle));
@@ -73,13 +76,13 @@ public class PlanetGenerator {
             0,  //get quality after
             false,
             false,
-            getPlanetType(),
+            getPlanetType(orbit),
             0,  //get population later
             0,
             0,  //get factories later
             Planet.BuildingType.NONE,
-            star.getId()
-        );
+            star.getId(),
+            orbit);
 
         planet.setQuality(getQuality(planet, star));
         //neutral planets start with 75% of their maximum
@@ -92,6 +95,37 @@ public class PlanetGenerator {
         }
 
         return planet;
+    }
+
+    private int getOrbit(Planet[] siblings, Star star) {
+        int orbit = 0;
+
+        boolean tooClose = false;
+        int tries = 0;
+        do{
+            tries++;
+            if(tries > 1000){
+                throw new RuntimeException("Unable to place planet");
+            }
+
+            orbit = random.nextInt(Defaults.PLANET_ORBITS.length);
+
+            tooClose = false;
+            for(Planet sibling : siblings){
+                if(sibling == null){
+                    continue;
+                }
+
+                int sibOrb = sibling.getOrbit();
+
+                if(sibOrb == orbit || (sibOrb + 1) == orbit || (sibOrb - 1) == orbit){
+                    tooClose = true;
+                }
+            }
+
+        }while(tooClose);
+
+        return orbit;
     }
 
     private boolean isNameInUse(String name) {
@@ -120,26 +154,39 @@ public class PlanetGenerator {
         return quality + variation;
     }
 
-    private Planet.PlanetType getPlanetType() {
-        int type = random.nextInt(15);
-
-        switch (type){
-            case 5:
-                return Planet.PlanetType.EARTH_LIKE;
-            case 6:
-            case 7:
-                return Planet.PlanetType.ICE;
-            case 8:
-                return Planet.PlanetType.MOLTEN;
-            case 9:
-                return Planet.PlanetType.SMALL;
-            case 10:
-                return Planet.PlanetType.GIANT;
-            case 11:
-            case 12:
-                return Planet.PlanetType.BARREN;
-            default:
-                return Planet.PlanetType.NORMAL;
+    private Planet.PlanetType getPlanetType(int orbit) {
+        if(orbit < 3) {
+            return Planet.PlanetType.MOLTEN;
+        }else if(orbit <  6){
+            int type = random.nextInt(4);
+            switch (type){
+                case 0:
+                    return Planet.PlanetType.EARTH_LIKE;
+                case 1:
+                    return Planet.PlanetType.BARREN;
+                case 2:
+                    return Planet.PlanetType.MOLTEN;
+                case 3:
+                    return Planet.PlanetType.NORMAL;
+                default:
+                    return Planet.PlanetType.BARREN;
+            }
+        }else{
+            int type = random.nextInt(5);
+            switch (type){
+                case 0:
+                    return Planet.PlanetType.ICE;
+                case 1:
+                    return Planet.PlanetType.BARREN;
+                case 2:
+                    return Planet.PlanetType.SMALL;
+                case 3:
+                    return Planet.PlanetType.NORMAL;
+                case 4:
+                    return Planet.PlanetType.GIANT;
+                default:
+                    return Planet.PlanetType.BARREN;
+            }
         }
     }
 

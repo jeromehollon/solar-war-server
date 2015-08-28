@@ -31,14 +31,23 @@ public class StarGenerator {
     }
 
     public Star[] generate() {
-
-
-        for(int i = 0; i < numberOfStars; i++){
-            initializeStar(i);
+        int index = 0;
+        for(index = 0; index < numberOfStars; index++){
+            try {
+                initializeStar(index);
+                placeStar(index);
+            }catch(RuntimeException ex){
+                break;
+            }
         }
 
-        for(int i = 0; i < numberOfStars; i++){
-            placeStar(i);
+        //check to make sure we could place everyone, if we couldn't, truncate the list.
+        if(index < numberOfStars){
+            Star[] truncatedStars = new Star[index];
+            for(int i = 0; i < index; i++){
+                truncatedStars[i] = this.stars[i];
+            }
+            this.stars = truncatedStars;
         }
 
         return this.stars;
@@ -62,8 +71,15 @@ public class StarGenerator {
             return;
         }
 
+        int placementAttempts = 0;
+
 
         while(true){
+            placementAttempts++;
+            if(placementAttempts > 5000){
+                throw new RuntimeException("Maximum stars placed.");
+            }
+
             int distance = rand.nextInt(Defaults.MAX_GALACTIC_DISTANCE);
             int angle = rand.nextInt(360);
 

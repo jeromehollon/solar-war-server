@@ -38,21 +38,37 @@ public class PlanetRules {
      * planets get high quality ratings. The quality should fall rapidly with
      * distance, and then level off. With this formula it does.
      *
+     *
+     *
+     * NEW FORMULA
+     * Linear decrease in quality based on star's distance from the core.
+     * This value is modified by a bell curve based on the orbit of the planet
+     * Planets in the goldilock's region get a boost to their quality, other planets
+     * get smaller or non-existent boosts.
+     *
      * @param planet
      * @return
      */
     public static double GetBaseQuality(Planet planet, Star star){
+        final double QUALITY_RANGE = Defaults.MAX_QUALITY - Defaults.MIN_QUALITY;
 
-        double distance = Math.sqrt(planet.getX() * planet.getX() + planet.getY() * planet.getY());
-        double quality = Defaults.MAX_QUALITY - Math.sqrt(distance) * 2;
+        double distance = Math.sqrt(star.getX() * star.getX() + star.getY() * star.getY());
+        double starQuality = (-1*QUALITY_RANGE*distance)/Defaults.MAX_GALACTIC_DISTANCE + Defaults.MAX_QUALITY;
 
-        if(quality < Defaults.MIN_QUALITY){
-            LOGGER.warn("Planet {}:{} ({},{}) has a quality ({}) too low for the minimum. It is at a distance of {}. Setting to minimum quality of {}",
-                    planet.getId(), planet.getName(), planet.getX(), planet.getY(), quality, distance, Defaults.MIN_QUALITY);
-            quality = Defaults.MIN_QUALITY;
+        //figure out planet quality
+        // y = ax^2+bx
+        double h = Defaults.MAX_QUALITY_BONUS_GOLDILOCKS;
+        double w = Defaults.PLANET_ORBITS.length;
+        double a =  (h * -4) / (w*w);
+        double b = -w * a;
+
+        double planetQuality = a * planet.getOrbit() * planet.getOrbit() + b * planet.getOrbit();
+
+        if(starQuality == 200){
+            LOGGER.debug("Orbit {}: {}", planet.getOrbit(), planetQuality);
         }
 
-        return quality;
+        return starQuality + planetQuality;
     }
 
     /**

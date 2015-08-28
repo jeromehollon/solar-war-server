@@ -23,6 +23,7 @@ public class Planet extends BaseEntity {
     private PlanetType planetType;
     private int starId;
     private String name;
+    private int orbit;
 
     //values during game
     private Integer population;
@@ -53,7 +54,7 @@ public class Planet extends BaseEntity {
 
     }
 
-    public Planet(int x, int y, String name, double quality, boolean isCore, boolean isOldEarth, PlanetType planetType, Integer population, Integer playerId, Integer factories, BuildingType buildingType, int starId) {
+    public Planet(int x, int y, String name, double quality, boolean isCore, boolean isOldEarth, PlanetType planetType, Integer population, Integer playerId, Integer factories, BuildingType buildingType, int starId, int orbit) {
         this.x = x;
         this.y = y;
         this.name = name;
@@ -66,6 +67,7 @@ public class Planet extends BaseEntity {
         this.factories = factories;
         this.buildingType = buildingType;
         this.starId = starId;
+        this.orbit = orbit;
     }
 
     public Integer getId() {
@@ -172,6 +174,14 @@ public class Planet extends BaseEntity {
         this.starId = starId;
     }
 
+    public int getOrbit() {
+        return orbit;
+    }
+
+    public void setOrbit(int orbit) {
+        this.orbit = orbit;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -184,8 +194,11 @@ public class Planet extends BaseEntity {
         if (Double.compare(planet.getQuality(), getQuality()) != 0) return false;
         if (isCore() != planet.isCore()) return false;
         if (isOldEarth() != planet.isOldEarth()) return false;
+        if (getStarId() != planet.getStarId()) return false;
+        if (getOrbit() != planet.getOrbit()) return false;
         if (getId() != null ? !getId().equals(planet.getId()) : planet.getId() != null) return false;
         if (getPlanetType() != planet.getPlanetType()) return false;
+        if (getName() != null ? !getName().equals(planet.getName()) : planet.getName() != null) return false;
         if (getPopulation() != null ? !getPopulation().equals(planet.getPopulation()) : planet.getPopulation() != null)
             return false;
         if (getPlayerId() != null ? !getPlayerId().equals(planet.getPlayerId()) : planet.getPlayerId() != null)
@@ -208,6 +221,9 @@ public class Planet extends BaseEntity {
         result = 31 * result + (isCore() ? 1 : 0);
         result = 31 * result + (isOldEarth() ? 1 : 0);
         result = 31 * result + (getPlanetType() != null ? getPlanetType().hashCode() : 0);
+        result = 31 * result + getStarId();
+        result = 31 * result + (getName() != null ? getName().hashCode() : 0);
+        result = 31 * result + getOrbit();
         result = 31 * result + (getPopulation() != null ? getPopulation().hashCode() : 0);
         result = 31 * result + (getPlayerId() != null ? getPlayerId().hashCode() : 0);
         result = 31 * result + (getFactories() != null ? getFactories().hashCode() : 0);
@@ -225,6 +241,9 @@ public class Planet extends BaseEntity {
                 ", isCore=" + isCore +
                 ", isOldEarth=" + isOldEarth +
                 ", planetType=" + planetType +
+                ", starId=" + starId +
+                ", name='" + name + '\'' +
+                ", orbit=" + orbit +
                 ", population=" + population +
                 ", playerId=" + playerId +
                 ", factories=" + factories +
