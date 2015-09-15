@@ -1,5 +1,6 @@
 package com.hollonconsulting.solarwars.server.gamerules;
 
+import com.hollonconsulting.solarwars.server.appconfig.ApplicationContextHolder;
 import com.hollonconsulting.solarwars.server.generator.ServerGenerator;
 import com.hollonconsulting.solarwars.server.repository.StarRepository;
 import com.hollonconsulting.solarwars.server.service.StarService;
@@ -14,24 +15,13 @@ import org.springframework.stereotype.Component;
 public class StartupHousekeeper implements ApplicationListener<ContextRefreshedEvent> {
     private static final Logger LOGGER = LoggerFactory.getLogger(StartupHousekeeper.class);
 
-    private StarService starService;
-    private ServerGenerator serverGenerator;
-
-    @Autowired
-    public void setStarService(StarService starService){
-        this.starService = starService;
-    }
-
-    @Autowired
-    public void setServerGenerator(ServerGenerator serverGenerator){
-        this.serverGenerator = serverGenerator;
-    }
-
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
         LOGGER.info("Context refreshed event.");
 
-        Thread generationThread = new Thread(serverGenerator);
+        ServerGenerator generator = ApplicationContextHolder.getContext().getBean(ServerGenerator.class);
+
+        Thread generationThread = new Thread(generator);
         generationThread.start();
     }
 }
