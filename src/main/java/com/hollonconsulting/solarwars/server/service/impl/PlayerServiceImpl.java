@@ -12,12 +12,14 @@ import java.util.List;
 @Service
 @Repository
 public class PlayerServiceImpl extends BaseServiceImpl<PlayerRepository, Player> implements PlayerService{
-    @Autowired
     PlayerRepository repository;
 
-    public PlayerServiceImpl(){
+    @Autowired
+    public PlayerServiceImpl(PlayerRepository repository){
         super();
         super.setRepository(repository);
+
+        this.repository = repository;
     }
 
     @Override

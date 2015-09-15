@@ -10,11 +10,13 @@ import org.springframework.stereotype.Repository;
 @Service
 @Repository
 public class RolesServiceImpl extends BaseServiceImpl<RolesRepository, Roles> implements RolesService {
-    @Autowired
     RolesRepository repository;
 
-    public RolesServiceImpl(){
+    @Autowired
+    public RolesServiceImpl(RolesRepository repository){
         super();
         super.setRepository(repository);
+
+        this.repository = repository;
     }
 }
