@@ -18,6 +18,8 @@ public abstract class BaseServiceImpl< R extends JpaRepository, E extends BaseEn
     @SuppressWarnings("unchecked")
     public BaseServiceImpl(){
         Class<R> repoType = (Class<R>) GenericTypeResolver.resolveTypeArguments(getClass(), BaseServiceImpl.class)[0];
+	org.springframework.context.ApplicationContext context = ApplicationContextHolder.getContext();
+	LOGGER.debug("Context: {}", context);
         repository = ApplicationContextHolder.getContext().getBean(repoType);
     }
 
