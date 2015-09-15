@@ -16,6 +16,11 @@ public class PlanetServiceImpl extends BaseServiceImpl<PlanetRepository, Planet>
     @Autowired
     PlanetRepository repository;
 
+    public PlanetServiceImpl() {
+        super();
+        super.setRepository(repository);
+    }
+
     @Override
     public List<String> findNameByStar(Integer starId) {
         List<Planet> planets = repository.findByStarId(starId);

@@ -2,6 +2,7 @@ package com.hollonconsulting.solarwars.server.service.impl;
 
 import com.hollonconsulting.solarwars.server.appconfig.ApplicationContextHolder;
 import com.hollonconsulting.solarwars.server.entity.BaseEntity;
+import com.hollonconsulting.solarwars.server.service.BaseService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.GenericTypeResolver;
@@ -15,12 +16,11 @@ public abstract class BaseServiceImpl< R extends JpaRepository, E extends BaseEn
     private static final Logger LOGGER = LoggerFactory.getLogger(BaseServiceImpl.class);
     private R repository;
 
-    @SuppressWarnings("unchecked")
     public BaseServiceImpl(){
-        Class<R> repoType = (Class<R>) GenericTypeResolver.resolveTypeArguments(getClass(), BaseServiceImpl.class)[0];
-	org.springframework.context.ApplicationContext context = ApplicationContextHolder.getContext();
-	LOGGER.debug("Context: {}", context);
-        repository = ApplicationContextHolder.getContext().getBean(repoType);
+    }
+
+    protected void setRepository(R repository){
+        this.repository = repository;
     }
 
     @Transactional

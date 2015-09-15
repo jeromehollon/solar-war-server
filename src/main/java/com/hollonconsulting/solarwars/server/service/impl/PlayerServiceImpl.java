@@ -15,6 +15,11 @@ public class PlayerServiceImpl extends BaseServiceImpl<PlayerRepository, Player>
     @Autowired
     PlayerRepository repository;
 
+    public PlayerServiceImpl(){
+        super();
+        super.setRepository(repository);
+    }
+
     @Override
     public Player findByUsername(String username) {
         List<Player> players = repository.findByUsername(username);
