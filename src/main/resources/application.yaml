@@ -32,10 +32,19 @@ logging:
     org.springframework.security: 'OFF'
     org.hiberante: DEBUG
 
-#server:
-#  port: 9000
+server:
+  port: 9000
 #  ssl:
 #    key-store: keystore.p12
 #    key-store-password: lanfear
 #    keyStoreType: PKCS12
 #    keyAlias: tomcat
+
+endpoints:
+  shutdown:
+    enabled: true
+  metrics:
+    enabled: true
+management:
+  port: 9001
+  address: 127.0.0.1

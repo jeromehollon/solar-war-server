@@ -24,6 +24,7 @@ public class ServerApplication extends SpringBootServletInitializer  {
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
         return application
+                .headless(true)
                 .showBanner(true)
                 .sources(ServerApplication.class);
     }
