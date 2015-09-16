@@ -122,6 +122,7 @@
                                     <artifactId>${project.artifactId}</artifactId>
                                     <version>${project.version}</version>
                                     <type>${project.packaging}</type>
+                                    <classifier>exec</classifier>
                                 </artifactItem>
                             </artifactItems>
                             <outputDirectory>/opt/build</outputDirectory>
