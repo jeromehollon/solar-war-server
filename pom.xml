@@ -123,6 +123,7 @@
                                     <version>${project.version}</version>
                                     <type>${project.packaging}</type>
                                     <classifier>exec</classifier>
+                                    <overWrite>true</overWrite>
                                 </artifactItem>
                             </artifactItems>
                             <outputDirectory>/opt/build</outputDirectory>
