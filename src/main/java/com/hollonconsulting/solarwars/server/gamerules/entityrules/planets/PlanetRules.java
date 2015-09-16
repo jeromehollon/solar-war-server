@@ -64,10 +64,6 @@ public class PlanetRules {
 
         double planetQuality = a * planet.getOrbit() * planet.getOrbit() + b * planet.getOrbit();
 
-        if(starQuality == 200){
-            LOGGER.debug("Orbit {}: {}", planet.getOrbit(), planetQuality);
-        }
-
         return starQuality + planetQuality;
     }
 

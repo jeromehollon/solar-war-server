@@ -14,11 +14,13 @@ import org.springframework.stereotype.Service;
 public class StarServiceImpl extends BaseServiceImpl<StarRepository, Star> implements StarService{
     private static final Logger LOGGER = LoggerFactory.getLogger(StarServiceImpl.class);
 
-    @Autowired
     StarRepository repository;
 
-    public StarServiceImpl(){
+    @Autowired
+    public StarServiceImpl(StarRepository repository){
         super();
         super.setRepository(repository);
+
+        this.repository = repository;
     }
 }

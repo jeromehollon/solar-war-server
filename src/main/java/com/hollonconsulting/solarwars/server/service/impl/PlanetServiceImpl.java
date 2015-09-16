@@ -13,12 +13,14 @@ import java.util.List;
 @Service
 @Repository
 public class PlanetServiceImpl extends BaseServiceImpl<PlanetRepository, Planet> implements PlanetService {
-    @Autowired
     PlanetRepository repository;
 
-    public PlanetServiceImpl() {
+    @Autowired
+    public PlanetServiceImpl(PlanetRepository repository) {
         super();
         super.setRepository(repository);
+
+        this.repository = repository;
     }
 
     @Override
