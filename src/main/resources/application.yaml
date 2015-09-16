@@ -25,7 +25,7 @@ datasource:
     password: lanfear
 
 logging:
-  file: logs/solar-war-server.log
+  file: /home/solarwarserver/app/logs/solar-war-server.log
   level:
     com.hollonconsulting.solarwars.server: 'DEBUG'
     org.springframework: 'WARN'
