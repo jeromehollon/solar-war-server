@@ -22,7 +22,7 @@ datasource:
     driverClassName: com.mysql.jdbc.Driver
     url: jdbc:mysql://localhost:3306/solar_war_server
     username: root
-    password: lanfear
+    password: changeit
 
 logging:
   file: /home/solarwarserver/app/logs/solar-war-server.log
