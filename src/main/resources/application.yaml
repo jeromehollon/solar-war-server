@@ -36,7 +36,7 @@ server:
   port: 9000
 #  ssl:
 #    key-store: keystore.p12
-#    key-store-password: lanfear
+#    key-store-password: changeit
 #    keyStoreType: PKCS12
 #    keyAlias: tomcat
 
